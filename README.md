@@ -7,9 +7,7 @@
 
 - 상세 정보 모달: 테이블의 특정 행을 클릭 시 해당 항목의 모든 상세 정보를 모달 창으로 표시
 
-- 효율적인 상태 관리: React Query (@tanstack/react-query)를 사용하여 API 데이터 페칭, 캐싱, 로딩 및 에러 상태를 관리
-
-- 사용자 친화적 UI: 테이블 행 호버(Hover) 효과, 가로 스크롤, 동적인 제목 등 사용자 경험을 고려한 UI/UX
+- 상태 관리: React Query (@tanstack/react-query)를 사용하여 API 데이터 페칭, 캐싱, 로딩 및 에러 상태를 관리
 
 - 배포 환경 구성: Netlify 배포를 위한 프록시 설정 (netlify.toml) 포함
 
