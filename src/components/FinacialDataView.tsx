@@ -1,4 +1,4 @@
-import React from 'react';
+import React, { useState } from 'react';
 import { ProcessedRecord } from '../hooks/useCompanyFacts';
 
 interface FinancialDataViewProps {
@@ -8,6 +8,7 @@ interface FinancialDataViewProps {
   isLoading: boolean;
   isFetching: boolean;
   error: Error | null;
+  onRowClick: (record: ProcessedRecord) => void; 
 }
 
 const FinancialDataView: React.FC<FinancialDataViewProps> = ({
@@ -17,7 +18,11 @@ const FinancialDataView: React.FC<FinancialDataViewProps> = ({
   isLoading,
   isFetching,
   error,
+  onRowClick,
 }) => {
+
+  const [hoveredRowIndex, setHoveredRowIndex] = useState<number | null>(null);
+  
   if (isLoading) {
     return <p style={{ textAlign: 'center' }}>{companyName} 데이터 로딩 중...</p>;
   }
@@ -44,7 +49,6 @@ const FinancialDataView: React.FC<FinancialDataViewProps> = ({
               <th style={{ ...tableHeaderStyle, width: '120px' }}>종료일</th>
               <th style={{ ...tableHeaderStyle, width: '90px' }}>회계연도</th>
               <th style={{ ...tableHeaderStyle, width: '90px' }}>회계분기</th>
-              {/* [수정 1] '재무항목'과 '항목설명' 컬럼에 너비 지정 */}
               <th style={{ ...tableHeaderStyle, width: '250px' }}>재무항목</th>
               <th style={{ ...tableHeaderStyle, width: '150px' }}>값</th>
               <th style={{ ...tableHeaderStyle, width: '100px' }}>단위</th>
@@ -55,12 +59,19 @@ const FinancialDataView: React.FC<FinancialDataViewProps> = ({
           </thead>
           <tbody>
             {records.map((rec, index) => (
-              <tr key={`${rec.제출일}-${rec.재무항목}-${index}`} style={{ borderBottom: '1px solid #ddd' }}>
+              <tr key={`${rec.제출일}-${rec.재무항목}-${index}`} 
+              style={{ borderBottom: '1px solid #ddd',
+
+                backgroundColor: hoveredRowIndex === index ? '#f5f5f5' : 'transparent'
+               }} 
+              onClick={() => onRowClick(rec)} 
+              onMouseEnter={() => setHoveredRowIndex(index)}
+              onMouseLeave={() => setHoveredRowIndex(null)}
+              >
                 <td style={tableCellStyle}>{rec.제출일}</td>
                 <td style={tableCellStyle}>{rec.종료일}</td>
                 <td style={tableCellStyle}>{rec.회계연도}</td>
                 <td style={tableCellStyle}>{rec.회계분기}</td>
-                {/* [수정 2] '재무항목'과 '항목설명' 셀에 스타일 적용 */}
                 <td style={ellipsisCellStyle} title={rec.재무항목}>
                   {rec.재무항목}
                 </td>

@@ -1,6 +1,7 @@
-import React from 'react';
-import { useCompanyFacts } from '../hooks/useCompanyFacts';
+import React, { useState } from 'react';
+import { ProcessedRecord, useCompanyFacts } from '../hooks/useCompanyFacts';
 import FinancialDataView from './FinacialDataView';
+import ModalDataView from './Modal/ModalDataView';
 
 
 // Props 타입 정의
@@ -12,6 +13,15 @@ interface FinancialDataTableProps {
 
 const FinancialDataTable: React.FC<FinancialDataTableProps> = ({ companyName, cik, years }) => {
   const { data, error, isLoading, isFetching } = useCompanyFacts(cik, companyName, years);
+  const [selectedRecord, setSelectedRecord] = useState<ProcessedRecord | null>(null);
+
+  const handleRowClick = (record: ProcessedRecord) => {
+    setSelectedRecord(record);
+  };
+
+  const handleCloseModal = () => {
+    setSelectedRecord(null);
+  };
 
 
   if (!cik) {
@@ -19,6 +29,7 @@ const FinancialDataTable: React.FC<FinancialDataTableProps> = ({ companyName, ci
   }
 
   return (
+    <>
     <FinancialDataView
       companyName={companyName}
       years={years}
@@ -26,7 +37,25 @@ const FinancialDataTable: React.FC<FinancialDataTableProps> = ({ companyName, ci
       isLoading={isLoading}
       isFetching={isFetching}
       error={error}
+      onRowClick={handleRowClick} 
     />
+         <ModalDataView isOpen={!!selectedRecord} onClose={handleCloseModal}>
+        {selectedRecord && (
+          <div>
+            <h3 style={{ marginTop: 0, borderBottom: '2px solid #eee', paddingBottom: '10px' }}>
+              상세 정보 ({selectedRecord.재무항목})
+            </h3>
+            <ul style={{ listStyle: 'none', padding: 0 }}>
+              {Object.entries(selectedRecord).map(([key, value]) => (
+                <li key={key} style={{ padding: '5px 0', borderBottom: '1px solid #f0f0f0' }}>
+                  <strong>{key}:</strong> {value?.toString() || 'N/A'}
+                </li>
+              ))}
+            </ul>
+          </div>
+        )}
+      </ModalDataView>
+    </>
   );
 };
 
