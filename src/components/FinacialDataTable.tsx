@@ -1,7 +1,11 @@
+// src/FinancialDataTable.tsx
 import React, { useState } from "react";
 import { ProcessedRecord, useCompanyFacts } from "../hooks/useCompanyFacts";
-import FinancialDataView from "./FinacialDataView";
+
 import ModalDataView from "./Modal/ModalDataView";
+import YoYChart from "./YoYChart";
+import InvestmentMetricsTable from "./InvestmentMetricsTable";
+import FinancialDataView from "./FinacialDataView";
 
 interface FinancialDataTableProps {
   companyName: string;
@@ -23,29 +27,38 @@ const FinancialDataTable: React.FC<FinancialDataTableProps> = ({
     null
   );
 
-  const handleRowClick = (record: ProcessedRecord) => {
-    setSelectedRecord(record);
-  };
+  const handleRowClick = (record: ProcessedRecord) => setSelectedRecord(record);
+  const handleCloseModal = () => setSelectedRecord(null);
 
-  const handleCloseModal = () => {
-    setSelectedRecord(null);
-  };
-
-  if (!cik) {
+  if (isLoading)
+    return <p style={{ textAlign: "center" }}>데이터 로딩 및 계산 중...</p>;
+  if (error)
     return (
-      <p style={{ textAlign: "center" }}>
-        📈 회사를 선택하여 재무 데이터를 조회하세요.
-      </p>
+      <p style={{ color: "red", textAlign: "center" }}>오류: {error.message}</p>
     );
-  }
+  if (!data) return <p style={{ textAlign: "center" }}>데이터가 없습니다.</p>;
 
   return (
     <>
+      <div
+        style={{
+          display: "grid",
+          gridTemplateColumns: "1fr 1fr",
+          gap: "20px",
+          marginBottom: "40px",
+        }}
+      >
+        {data.yoyChartData && <YoYChart chartData={data.yoyChartData} />}
+        {data.investmentMetrics && (
+          <InvestmentMetricsTable metrics={data.investmentMetrics} />
+        )}
+      </div>
+
       <FinancialDataView
         companyName={companyName}
         years={years}
-        records={data}
-        isLoading={isLoading}
+        records={data.records}
+        isLoading={isLoading} // FinancialDataView는 이제 로딩 상태를 직접 관리하지 않음
         isFetching={isFetching}
         error={error}
         onRowClick={handleRowClick}
@@ -53,24 +66,10 @@ const FinancialDataTable: React.FC<FinancialDataTableProps> = ({
       <ModalDataView isOpen={!!selectedRecord} onClose={handleCloseModal}>
         {selectedRecord && (
           <div>
-            <h3
-              style={{
-                marginTop: 0,
-                borderBottom: "2px solid #eee",
-                paddingBottom: "10px",
-              }}
-            >
-              상세 정보 ({selectedRecord.재무항목})
-            </h3>
-            <ul style={{ listStyle: "none", padding: 0 }}>
+            <h3>상세 정보 ({selectedRecord.재무항목})</h3>
+            <ul>
               {Object.entries(selectedRecord).map(([key, value]) => (
-                <li
-                  key={key}
-                  style={{
-                    padding: "5px 0",
-                    borderBottom: "1px solid #f0f0f0",
-                  }}
-                >
+                <li key={key}>
                   <strong>{key}:</strong> {value?.toString() || "N/A"}
                 </li>
               ))}
@@ -81,5 +80,4 @@ const FinancialDataTable: React.FC<FinancialDataTableProps> = ({
     </>
   );
 };
-
 export default FinancialDataTable;
