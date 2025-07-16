@@ -1,10 +1,10 @@
 import React, { useState } from "react";
 import { ProcessedRecord, useCompanyFacts } from "../hooks/useCompanyFacts";
 
-import ModalDataView from "./Modal/ModalDataView"; // 경로 확인 필요
-import YoYChart from "./YoYChart"; // 경로 확인 필요
-import InvestmentMetricsTable from "./InvestmentMetricsTable"; // 경로 확인 필요
-import AnalysisSummary from "./AnalysisSummary"; // 경로 확인 필요
+import ModalDataView from "./Modal/ModalDataView";
+import YoYChart from "./YoYChart";
+import InvestmentMetricsTable from "./InvestmentMetricsTable";
+import AnalysisSummary from "./AnalysisSummary";
 import FinancialDataView from "./FinacialDataView";
 import IncomeStatementTable from "./IncomeStatementTable";
 
@@ -59,6 +59,7 @@ const FinancialDataTable: React.FC<FinancialDataTableProps> = ({
           <InvestmentMetricsTable metrics={data.investmentMetrics} />
         )}
       </div>
+      {/* 연간 손익계산서 */}
       {data.incomeStatementData && (
         <IncomeStatementTable data={data.incomeStatementData} />
       )}

@@ -1,6 +1,8 @@
 import { useQuery } from "@tanstack/react-query";
 
-// --- 모든 타입 정의 (수정 없음) ---
+// --- 타입 정의: 애플리케이션 전체에서 사용될 데이터 구조를 정의합니다. ---
+
+/** 상세 재무제표 테이블의 각 행을 나타내는 데이터 타입 */
 export interface ProcessedRecord {
   회사명: string;
   CIK번호: string;
@@ -15,12 +17,16 @@ export interface ProcessedRecord {
   공시서류: string;
   제출일: string;
 }
+
+/** 연간 투자 지표(ROE, ROA 등)를 위한 데이터 타입 */
 export interface InvestmentMetric {
   year: number;
   roe?: number;
   roa?: number;
   debtToEquity?: number;
 }
+
+/** YoY 성장률 그래프를 위한 데이터 타입 (Chart.js 형식) */
 export interface ChartData {
   labels: string[];
   datasets: {
@@ -31,12 +37,16 @@ export interface ChartData {
     borderWidth: number;
   }[];
 }
+
+/** 5단계 분석 모델의 각 단계를 위한 데이터 타입 */
 export interface AnalysisStep {
   label: string;
   value: number | undefined;
   score: number;
   description: string;
 }
+
+/** 5단계 분석의 최종 결과를 위한 데이터 타입 */
 export interface AnalysisResult {
   totalScore: number;
   evaluation: string;
@@ -44,7 +54,7 @@ export interface AnalysisResult {
   steps: AnalysisStep[];
 }
 
-// [수정] IncomeStatementRecord 타입에 netIncome 추가
+/** 손익계산서 요약 테이블을 위한 데이터 타입 */
 export interface IncomeStatementRecord {
   year: number;
   quarter?: string;
@@ -53,10 +63,14 @@ export interface IncomeStatementRecord {
   netIncome?: number;
   filed: string;
 }
+
+/** 연간/분기 손익계산서 데이터를 포함하는 최종 타입 */
 export interface IncomeStatementData {
   annual: IncomeStatementRecord[];
   quarterly: IncomeStatementRecord[];
 }
+
+// --- API 응답 원본 데이터 타입 정의 ---
 interface SECUnitData {
   fy: number;
   val: number;
@@ -74,40 +88,50 @@ interface SECData {
   facts: { "us-gaap": { [key: string]: SECFact } };
 }
 
-// --- 모든 헬퍼 함수 (수정 없음) ---
-const getGrowthScore = (v?: number) => {
-  if (v === undefined) return 1;
-  if (v > 20) return 5;
-  if (v > 10) return 4;
-  if (v > 5) return 3;
-  if (v > 0) return 2;
+// --- 헬퍼 함수: 5단계 평가 모델의 점수 계산 로직 ---
+
+/** 성장률 점수 계산 (매출, 영업이익, 순이익 YoY) */
+const getGrowthScore = (value?: number): number => {
+  if (value === undefined) return 1;
+  if (value > 20) return 5;
+  if (value > 10) return 4;
+  if (value > 5) return 3;
+  if (value > 0) return 2;
   return 1;
-};
-const getRoeScore = (v?: number) => {
-  if (v === undefined) return 1;
-  if (v > 20) return 5;
-  if (v > 15) return 4;
-  if (v > 10) return 3;
-  if (v > 5) return 2;
-  return 1;
-};
-const getDebtRatioScore = (v?: number) => {
-  if (v === undefined) return 1;
-  if (v < 50) return 5;
-  if (v < 100) return 4;
-  if (v < 150) return 3;
-  if (v < 200) return 2;
-  return 1;
-};
-const getTotalScoreEvaluation = (s: number) => {
-  if (s >= 21) return { e: "매우 긍정적", c: "#2ecc71" };
-  if (s >= 16) return { e: "긍정적", c: "#3498db" };
-  if (s >= 11) return { e: "보통", c: "#f1c40f" };
-  if (s >= 6) return { e: "주의 필요", c: "#e67e22" };
-  return { e: "부정적", c: "#e74c3c" };
 };
 
-// --- [신규] 여러 매출 항목을 순차적으로 찾는 헬퍼 함수 ---
+/** ROE 점수 계산 */
+const getRoeScore = (value?: number): number => {
+  if (value === undefined) return 1;
+  if (value > 20) return 5;
+  if (value > 15) return 4;
+  if (value > 10) return 3;
+  if (value > 5) return 2;
+  return 1;
+};
+
+/** 부채비율 점수 계산 */
+const getDebtRatioScore = (value?: number): number => {
+  if (value === undefined) return 1;
+  if (value < 50) return 5;
+  if (value < 100) return 4;
+  if (value < 150) return 3;
+  if (value < 200) return 2;
+  return 1;
+};
+
+/** 총점에 따른 최종 평가 등급 및 색상 반환 */
+const getTotalScoreEvaluation = (
+  score: number
+): { evaluation: string; color: string } => {
+  if (score >= 21) return { evaluation: "매우 긍정적", color: "#2ecc71" };
+  if (score >= 16) return { evaluation: "긍정적", color: "#3498db" };
+  if (score >= 11) return { evaluation: "보통", color: "#f1c40f" };
+  if (score >= 6) return { evaluation: "주의 필요", color: "#e67e22" };
+  return { evaluation: "부정적", color: "#e74c3c" };
+};
+
+/** 여러 가능한 매출 항목을 순차적으로 찾아 반환하는 함수 */
 const getRevenueValue = (dataObject: any): number | undefined => {
   if (!dataObject) return undefined;
   return (
@@ -117,7 +141,7 @@ const getRevenueValue = (dataObject: any): number | undefined => {
   );
 };
 
-// --- 리팩토링된 함수들 ---
+/** 1. 원본 데이터에서 상세 레코드와 연간/분기 데이터를 집계하는 함수 */
 const aggregateFinancialData = (
   facts: SECData["facts"]["us-gaap"],
   companyName: string,
@@ -178,6 +202,7 @@ const aggregateFinancialData = (
   return { processedRecords, annualData, quarterlyData };
 };
 
+/** 2. 투자 지표(ROE, ROA, 부채비율)를 계산하는 함수 */
 const calculateInvestmentMetrics = (
   annualData: { [year: number]: any },
   years: number
@@ -215,6 +240,7 @@ const calculateInvestmentMetrics = (
   return investmentMetrics.reverse();
 };
 
+/** 3. YoY 성장률 차트 데이터를 계산하는 함수 */
 const calculateYoYChartData = (annualData: {
   [year: number]: any;
 }): ChartData => {
@@ -222,21 +248,21 @@ const calculateYoYChartData = (annualData: {
     labels: [],
     datasets: [
       {
-        label: "매출(Revenues) YoY",
+        label: "매출 YoY",
         data: [],
         backgroundColor: "rgba(75, 192, 192, 0.6)",
         borderColor: "rgba(75, 192, 192, 1)",
         borderWidth: 1,
       },
       {
-        label: "영업이익(OperatingIncomeLoss) YoY",
+        label: "영업이익 YoY",
         data: [],
         backgroundColor: "rgba(255, 159, 64, 0.6)",
         borderColor: "rgba(255, 159, 64, 1)",
         borderWidth: 1,
       },
       {
-        label: "순이익(NetIncomeLoss) YoY",
+        label: "순이익 YoY",
         data: [],
         backgroundColor: "rgba(153, 102, 255, 0.6)",
         borderColor: "rgba(153, 102, 255, 1)",
@@ -278,6 +304,7 @@ const calculateYoYChartData = (annualData: {
   return yoyChartData;
 };
 
+/** 4. 5단계 정량 분석 모델을 실행하는 함수 */
 const runAnalysisModel = (
   investmentMetrics: InvestmentMetric[],
   yoyChartData: ChartData
@@ -324,12 +351,11 @@ const runAnalysisModel = (
     },
   ];
   const totalScore = steps.reduce((sum, step) => sum + step.score, 0);
-  const { e: evaluation, c: evaluationColor } =
-    getTotalScoreEvaluation(totalScore);
-  return { totalScore, evaluation, evaluationColor, steps };
+  const { evaluation, color } = getTotalScoreEvaluation(totalScore);
+  return { totalScore, evaluation, evaluationColor: color, steps };
 };
 
-// [수정] aggregateIncomeStatements 함수에 netIncome 추가
+/** 5. 연간/분기 손익계산서 데이터를 집계하는 함수 */
 const aggregateIncomeStatements = (
   annualData: { [year: number]: any },
   quarterlyData: { [key: string]: any },
@@ -344,7 +370,7 @@ const aggregateIncomeStatements = (
       year: d.year,
       revenue: getRevenueValue(d),
       operatingIncome: d.OperatingIncomeLoss,
-      netIncome: d.NetIncomeLoss, // 순이익 추가
+      netIncome: d.NetIncomeLoss,
       filed: d.filed || "",
     }))
     .sort((a, b) => b.year - a.year);
@@ -355,7 +381,7 @@ const aggregateIncomeStatements = (
       quarter: d.quarter,
       revenue: getRevenueValue(d),
       operatingIncome: d.OperatingIncomeLoss,
-      netIncome: d.NetIncomeLoss, // 순이익 추가
+      netIncome: d.NetIncomeLoss,
       filed: d.filed,
     }))
     .sort((a, b) => new Date(b.filed).getTime() - new Date(a.filed).getTime());
@@ -363,22 +389,25 @@ const aggregateIncomeStatements = (
   return { annual: annualIncome, quarterly: quarterlyIncome };
 };
 
-// --- 메인 데이터 페칭 함수 ---
+// --- 메인 데이터 페칭 함수 (모든 로직을 조합) ---
 const fetchAndProcessAllData = async (
   cik: string,
   companyName: string,
   years: number
 ) => {
+  // 1. SEC API에서 원본 데이터 호출
   const url = `/api/xbrl/companyfacts/CIK${cik}.json`;
   const headers = { "User-Agent": "MyWebApp my.email@example.com" };
-
   const response = await fetch(url, { headers });
   if (!response.ok) throw new Error(`HTTP 오류: ${response.status}`);
   const data: SECData = await response.json();
   const facts = data.facts?.["us-gaap"] || {};
 
+  // 2. 원본 데이터를 필요한 형태로 1차 가공 및 집계
   const { processedRecords, annualData, quarterlyData } =
     aggregateFinancialData(facts, companyName, cik, years);
+
+  // 3. 집계된 데이터를 바탕으로 각 지표 계산
   const investmentMetrics = calculateInvestmentMetrics(annualData, years);
   const yoyChartData = calculateYoYChartData(annualData);
   const incomeStatementData = aggregateIncomeStatements(
@@ -386,8 +415,11 @@ const fetchAndProcessAllData = async (
     quarterlyData,
     years
   );
+
+  // 4. 계산된 지표들로 최종 분석 모델 실행
   const analysisResult = runAnalysisModel(investmentMetrics, yoyChartData);
 
+  // 5. 모든 결과를 하나의 객체로 조합하여 반환
   return {
     records: processedRecords,
     yoyChartData,
@@ -397,7 +429,7 @@ const fetchAndProcessAllData = async (
   };
 };
 
-// --- 커스텀 훅 ---
+// --- 커스텀 훅: React 컴포넌트에서 데이터를 쉽게 사용하도록 돕는 최종 인터페이스 ---
 export const useCompanyFacts = (
   cik: string,
   companyName: string,
@@ -406,8 +438,8 @@ export const useCompanyFacts = (
   return useQuery({
     queryKey: ["companyFacts", cik, companyName, years],
     queryFn: () => fetchAndProcessAllData(cik, companyName, years),
-    enabled: !!cik && years > 0,
-    staleTime: 1000 * 60 * 5,
-    refetchOnWindowFocus: false,
+    enabled: !!cik && years > 0, // CIK와 years가 있을 때만 쿼리 실행
+    staleTime: 1000 * 60 * 5, // 5분 동안 데이터를 '신선한' 상태로 간주 (캐시 활용)
+    refetchOnWindowFocus: false, // 창 포커스 시 자동 리페치 비활성화
   });
 };
