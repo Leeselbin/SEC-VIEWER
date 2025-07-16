@@ -1,6 +1,5 @@
-// src/components/AnalysisSummary.tsx
 import React from "react";
-import { AnalysisResult, AnalysisStep } from "../hooks/useCompanyFacts";
+import { AnalysisResult } from "../hooks/useCompanyFacts";
 
 interface AnalysisSummaryProps {
   result: AnalysisResult;
