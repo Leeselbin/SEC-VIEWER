@@ -1,6 +1,7 @@
 <h2>SEC 기업 재무 데이터 뷰어 (SEC Financial Data Viewer) 📊</h2>
 > 이 프로젝트는 React와 TypeScript를 사용하여 미국 증권거래위원회(SEC)의 EDGAR API로부터 기업의 재무 데이터를 조회하는 웹 애플리케이션입니다. 사용자는 특정 기업과 기간을 선택하여 재무제표 항목들을 테이블 형태로 확인하고, 각 항목의 상세 정보를 모달 창으로 볼 수 있습니다.
 
+https://sec-viewer.netlify.app/
 ---
 
 <h1>✨ 주요 기능</h1>
