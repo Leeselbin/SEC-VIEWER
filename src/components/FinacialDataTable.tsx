@@ -6,6 +6,7 @@ import YoYChart from "./YoYChart"; // 경로 확인 필요
 import InvestmentMetricsTable from "./InvestmentMetricsTable"; // 경로 확인 필요
 import AnalysisSummary from "./AnalysisSummary"; // 경로 확인 필요
 import FinancialDataView from "./FinacialDataView";
+import IncomeStatementTable from "./IncomeStatementTable";
 
 interface FinancialDataTableProps {
   companyName: string;
@@ -58,7 +59,9 @@ const FinancialDataTable: React.FC<FinancialDataTableProps> = ({
           <InvestmentMetricsTable metrics={data.investmentMetrics} />
         )}
       </div>
-
+      {data.incomeStatementData && (
+        <IncomeStatementTable data={data.incomeStatementData} />
+      )}
       {/* 상세설명 */}
       <FinancialDataView
         companyName={companyName}

@@ -102,7 +102,7 @@ const FinancialDataView: React.FC<FinancialDataViewProps> = ({
                 <td style={ellipsisCellStyle} title={rec.재무항목}>
                   {rec.재무항목}
                 </td>
-                <td style={{ ...tableCellStyle, textAlign: "right" }}>
+                <td style={{ ...tableCellStyle, textAlign: "left" }}>
                   {rec.값.toLocaleString()}
                 </td>
                 <td style={tableCellStyle}>{rec.단위}</td>
