@@ -51,18 +51,23 @@ const FinancialDataTable: React.FC<FinancialDataTableProps> = ({
           margin: "40px 0",
         }}
       >
+        {/* YoY 성장률 */}
         {data.yoyChartData && <YoYChart chartData={data.yoyChartData} />}
+        {/* 주요 투자 지표 */}
         {data.investmentMetrics && (
           <InvestmentMetricsTable metrics={data.investmentMetrics} />
         )}
       </div>
 
+      {/* 상세설명 */}
       <FinancialDataView
         companyName={companyName}
         years={years}
         records={data.records}
         onRowClick={handleRowClick}
       />
+
+      {/* Modal */}
       <ModalDataView isOpen={!!selectedRecord} onClose={handleCloseModal}>
         {selectedRecord && (
           <div>
