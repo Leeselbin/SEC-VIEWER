@@ -67,7 +67,20 @@ const FinancialDataView: React.FC<FinancialDataViewProps> = ({
             tableLayout: "fixed",
           }}
         >
-          <thead>{/* ... thead 부분은 동일 ... */}</thead>
+          <thead>
+            <tr style={{ backgroundColor: "#f2f2f2" }}>
+              <th style={{ ...tableHeaderStyle, width: "120px" }}>제출일</th>
+              <th style={{ ...tableHeaderStyle, width: "120px" }}>종료일</th>
+              <th style={{ ...tableHeaderStyle, width: "90px" }}>회계연도</th>
+              <th style={{ ...tableHeaderStyle, width: "90px" }}>회계분기</th>
+              <th style={{ ...tableHeaderStyle, width: "250px" }}>재무항목</th>
+              <th style={{ ...tableHeaderStyle, width: "150px" }}>값</th>
+              <th style={{ ...tableHeaderStyle, width: "100px" }}>단위</th>
+              <th style={{ ...tableHeaderStyle, width: "300px" }}>항목설명</th>
+              <th style={{ ...tableHeaderStyle, width: "100px" }}>공시서류</th>
+              <th style={{ ...tableHeaderStyle, width: "120px" }}>시작일</th>
+            </tr>
+          </thead>
           <tbody>
             {records.map((rec, index) => (
               <tr
