@@ -51,10 +51,18 @@ const FinancialDataView: React.FC<FinancialDataViewProps> = ({
       <h3 style={{ textAlign: "center", marginTop: "40px" }}>
         상세 재무제표 (최근 {years}년)
       </h3>
-      <div style={{ overflowX: "auto", border: "1px solid #ddd" }}>
+      <div
+        style={{
+          overflowX: "auto",
+          height: "500px",
+          border: "1px solid #ddd",
+          marginBottom: "50px",
+        }}
+      >
         <table
           style={{
             width: "100%",
+
             minWidth: "1200px",
             borderCollapse: "collapse",
             tableLayout: "fixed",
