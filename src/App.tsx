@@ -32,6 +32,7 @@ const App: React.FC = () => {
             companyName={searchParams.companyName}
             cik={searchParams.cik}
             years={searchParams.years}
+            ticker={searchParams.ticker}
           />
         ) : (
           <p style={{ textAlign: "center" }}>

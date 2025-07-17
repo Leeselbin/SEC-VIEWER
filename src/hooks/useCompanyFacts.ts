@@ -1,7 +1,5 @@
 import { useQuery } from "@tanstack/react-query";
 
-// --- 타입 정의: 애플리케이션 전체에서 사용될 데이터 구조를 정의합니다. ---
-
 /** 상세 재무제표 테이블의 각 행을 나타내는 데이터 타입 */
 export interface ProcessedRecord {
   회사명: string;
@@ -149,11 +147,12 @@ const aggregateFinancialData = (
   years: number
 ) => {
   const currentYear = new Date().getFullYear();
-  const minYearForCalc = currentYear - years - 1;
-  const minYearForDisplay = currentYear - years;
-  const processedRecords: ProcessedRecord[] = [];
-  const annualData: { [year: number]: { [key: string]: any } } = {};
-  const quarterlyData: { [key: string]: { [key: string]: any } } = {};
+  const minYearForCalc = currentYear - years - 1; // 전년대비 성장률비교하기위해서
+  const minYearForDisplay = currentYear - years; // 실제로 보여줄 시작연도
+  const processedRecords: ProcessedRecord[] = []; // 모든데이터 행
+
+  const annualData: { [year: number]: { [key: string]: any } } = {}; // 연간데이터 10-K
+  const quarterlyData: { [key: string]: { [key: string]: any } } = {}; // 분기데이터 10-Q
 
   for (const conceptName in facts) {
     const conceptData = facts[conceptName];
@@ -177,12 +176,13 @@ const aggregateFinancialData = (
             });
           }
           if (unit === "USD") {
+            // 단위가 'USD'인 데이터만
             if (record.form === "10-K") {
               if (!annualData[record.fy])
                 annualData[record.fy] = { year: record.fy };
               annualData[record.fy][conceptName] = record.val;
             } else if (record.form === "10-Q") {
-              const key = `${record.fy}${record.fp}`;
+              const key = `${record.fy}${record.fp}`; // 연도, 분기 키값
               if (!quarterlyData[key])
                 quarterlyData[key] = {
                   year: record.fy,

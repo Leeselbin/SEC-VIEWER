@@ -36,9 +36,6 @@ const AnalysisSummary: React.FC<AnalysisSummaryProps> = ({ result }) => {
         backgroundColor: "#fafafa",
       }}
     >
-      <h3 style={{ textAlign: "center", marginTop: 0, marginBottom: "20px" }}>
-        종합 재무 분석 (5단계 평가)
-      </h3>
       <div style={{ textAlign: "center", marginBottom: "30px" }}>
         <span style={{ fontSize: "20px", fontWeight: "bold" }}>총점: </span>
         <span

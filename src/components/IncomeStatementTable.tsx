@@ -13,7 +13,7 @@ const IncomeStatementTable: React.FC<IncomeStatementTableProps> = ({
     padding: "20px",
     border: "1px solid #ddd",
     borderRadius: "8px",
-    marginTop: "40px",
+    // marginTop: "40px",
   };
   const tableHeaderStyle: React.CSSProperties = {
     padding: "12px",

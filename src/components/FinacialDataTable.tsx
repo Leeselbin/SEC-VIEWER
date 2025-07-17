@@ -7,19 +7,29 @@ import InvestmentMetricsTable from "./InvestmentMetricsTable";
 import AnalysisSummary from "./AnalysisSummary";
 import FinancialDataView from "./FinacialDataView";
 import IncomeStatementTable from "./IncomeStatementTable";
+import Accordion from "./Accordion";
+import { useStockPrice } from "../hooks/useStockPrice";
+import StockPriceChart from "./StockPriceChart";
 
 interface FinancialDataTableProps {
   companyName: string;
   cik: string;
   years: number;
+  ticker: string;
 }
 
 const FinancialDataTable: React.FC<FinancialDataTableProps> = ({
   companyName,
   cik,
   years,
+  ticker,
 }) => {
   const { data, error, isLoading } = useCompanyFacts(cik, companyName, years);
+  const {
+    data: stockData,
+    error: stockError,
+    isLoading: isStockLoading,
+  } = useStockPrice(ticker, years);
   const [selectedRecord, setSelectedRecord] = useState<ProcessedRecord | null>(
     null
   );
@@ -42,34 +52,66 @@ const FinancialDataTable: React.FC<FinancialDataTableProps> = ({
 
   return (
     <>
-      {data.analysisResult && <AnalysisSummary result={data.analysisResult} />}
+      {/* 종합 재무 분석 */}
+      {data.analysisResult && (
+        <Accordion title="종합 재무 분석 (5단계 평가)" defaultOpen={true}>
+          <AnalysisSummary result={data.analysisResult} />
+        </Accordion>
+      )}
 
-      <div
-        style={{
-          display: "grid",
-          gridTemplateColumns: "1fr 1fr",
-          gap: "20px",
-          margin: "40px 0",
-        }}
+      {/* 주가 차트 아코디언 추가 */}
+      <Accordion
+        title={`${companyName} (${ticker}) 주가 차트`}
+        defaultOpen={true}
       >
-        {/* YoY 성장률 */}
-        {data.yoyChartData && <YoYChart chartData={data.yoyChartData} />}
-        {/* 주요 투자 지표 */}
-        {data.investmentMetrics && (
-          <InvestmentMetricsTable metrics={data.investmentMetrics} />
+        {stockData && (
+          <StockPriceChart chartData={stockData} companyName={companyName} />
         )}
+      </Accordion>
+
+      {/* 주요 투자 지표, YoY 성장률 */}
+      <div style={{ display: "grid", margin: "40px 0" }}>
+        <Accordion title="성장성 및 투자 지표 시각화" defaultOpen={true}>
+          <div
+            style={{
+              display: "grid",
+
+              gridTemplateColumns: "1fr 1fr",
+              gap: "20px",
+            }}
+          >
+            {data.yoyChartData && <YoYChart chartData={data.yoyChartData} />}
+
+            {data.investmentMetrics && (
+              <InvestmentMetricsTable metrics={data.investmentMetrics} />
+            )}
+          </div>
+        </Accordion>
       </div>
+
       {/* 연간 손익계산서 */}
       {data.incomeStatementData && (
-        <IncomeStatementTable data={data.incomeStatementData} />
+        <Accordion title="손익계산서 요약" defaultOpen={true}>
+          <IncomeStatementTable data={data.incomeStatementData} />
+        </Accordion>
       )}
+
       {/* 상세설명 */}
-      <FinancialDataView
-        companyName={companyName}
-        years={years}
-        records={data.records}
-        onRowClick={handleRowClick}
-      />
+      {data.records && (
+        <div style={{ margin: "40px 0 40px" }}>
+          <Accordion
+            title={`상세 재무제표 (최근 ${years}년)`}
+            defaultOpen={true}
+          >
+            <FinancialDataView
+              companyName={companyName}
+              years={years}
+              records={data.records}
+              onRowClick={handleRowClick}
+            />
+          </Accordion>
+        </div>
+      )}
 
       {/* Modal */}
       <ModalDataView isOpen={!!selectedRecord} onClose={handleCloseModal}>

@@ -1,26 +1,26 @@
 import React, { useState } from "react";
 
 const COMPANIES: { [key: string]: string } = {
-  Microsoft: "0000789019",
-  Apple: "0000320193",
-  NVIDIA: "0001045810",
-  Amazon: "0001018724",
-  "Alphabet (Google)": "0001652044",
-  "Meta Platforms": "0001326801",
-  "Berkshire Hathaway": "0001067983",
-  "Eli Lilly": "0000059478",
-  Broadcom: "0001730168",
-  "JPMorgan Chase": "0000019617",
-  Tesla: "0001318605",
-  Visa: "0001403161",
-  "Johnson & Johnson": "0000200406",
-  Walmart: "0000104169",
-  "Exxon Mobil": "0000034088",
-  "UnitedHealth Group": "0000731766",
-  Mastercard: "0001141391",
-  "Procter & Gamble": "0000080424",
-  Costco: "0000909832",
-  "Home Depot": "0000354950",
+  NVDA: "0001045810",
+  MSFT: "0000789019",
+  AAPL: "0000320193",
+  AMZN: "0001018724",
+  GOOGL: "0001652044",
+  META: "0001326801",
+  AVGO: "0001730168",
+  "BRK-B": "0001067983",
+  TSLA: "0001318605",
+  JPM: "0000019617",
+  WMT: "0000104169",
+  V: "0001403161",
+  LLY: "0000059478",
+  ORCL: "0001341439",
+  NFLX: "0001065280",
+  MA: "0001141391",
+  XOM: "0000034088",
+  COST: "0000909832",
+  CBOE: "0001374310",
+  // GOOG: "0001652044",
 };
 
 const YEAR_OPTIONS = [1, 2, 3, 4, 5, 10];
@@ -29,6 +29,7 @@ export interface SearchParams {
   cik: string;
   companyName: string;
   years: number;
+  ticker: string;
 }
 
 interface SearchFormProps {
@@ -54,7 +55,14 @@ const SearchForm: React.FC<SearchFormProps> = ({
     const companyName =
       Object.keys(COMPANIES).find((name) => COMPANIES[name] === selectedCik) ||
       "";
-    onSearch({ cik: selectedCik, companyName, years: selectedYears });
+
+    console.log("companyName :", companyName);
+    onSearch({
+      cik: selectedCik,
+      companyName,
+      years: selectedYears,
+      ticker: companyName,
+    });
   };
 
   const handleReset = () => {
