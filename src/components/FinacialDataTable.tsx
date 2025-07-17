@@ -42,11 +42,13 @@ const FinancialDataTable: React.FC<FinancialDataTableProps> = ({
     setSelectedRecord(null);
   };
 
-  if (isLoading)
+  if (isLoading || isStockLoading)
     return <p style={{ textAlign: "center" }}>데이터 로딩 및 계산 중...</p>;
-  if (error)
+  if (error || stockError)
     return (
-      <p style={{ color: "red", textAlign: "center" }}>오류: {error.message}</p>
+      <p style={{ color: "red", textAlign: "center" }}>
+        오류: {error?.message}
+      </p>
     );
   if (!data) return <p style={{ textAlign: "center" }}>데이터가 없습니다.</p>;
 
