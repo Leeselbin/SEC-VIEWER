@@ -51,9 +51,9 @@ const FinancialDataTable: React.FC<FinancialDataTableProps> = ({
     setSelectedRecord(null);
   };
 
-  if (isLoading || isStockLoading)
+  if (isLoading || isStockLoading || isPolarityLoading)
     return <p style={{ textAlign: "center" }}>데이터 로딩 및 계산 중...</p>;
-  if (error || stockError)
+  if (error || stockError || polarityError)
     return (
       <p style={{ color: "red", textAlign: "center" }}>
         오류: {error?.message}
