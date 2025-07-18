@@ -34,4 +34,16 @@ module.exports = function (app) {
       },
     })
   );
+
+  // 뉴스기사 수집후 긍부정 판단 API 프록시
+  app.use(
+    "/polarityPress-api",
+    createProxyMiddleware({
+      target: "https://port-0-work-fount-md5atyx32a28fa6c.sel5.cloudtype.app",
+      changeOrigin: true,
+      pathRewrite: {
+        "^/polarityPress-api": "",
+      },
+    })
+  );
 };

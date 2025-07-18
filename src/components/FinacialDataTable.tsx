@@ -10,6 +10,7 @@ import IncomeStatementTable from "./IncomeStatementTable";
 import Accordion from "./Accordion";
 import { useStockPrice } from "../hooks/useStockPrice";
 import StockPriceChart from "./StockPriceChart";
+import { usePolarityPress } from "../hooks/usePolarityPress";
 
 interface FinancialDataTableProps {
   companyName: string;
@@ -30,6 +31,14 @@ const FinancialDataTable: React.FC<FinancialDataTableProps> = ({
     error: stockError,
     isLoading: isStockLoading,
   } = useStockPrice(ticker, years);
+  const {
+    data: polarityData,
+    error: polarityError,
+    isLoading: isPolarityLoading,
+  } = usePolarityPress(ticker);
+
+  console.log("polarityData :", polarityData);
+
   const [selectedRecord, setSelectedRecord] = useState<ProcessedRecord | null>(
     null
   );
@@ -61,7 +70,7 @@ const FinancialDataTable: React.FC<FinancialDataTableProps> = ({
         </Accordion>
       )}
 
-      {/* 주가 차트 아코디언 추가 */}
+      {/* 주가 차트*/}
       <Accordion
         title={`${companyName} (${ticker}) 주가 차트`}
         defaultOpen={true}

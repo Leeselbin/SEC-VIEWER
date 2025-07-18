@@ -8,6 +8,7 @@ const App: React.FC = () => {
 
   // '검색' 버튼을 눌렀을 때 호출될 함수
   const handleSearch = (params: SearchParams) => {
+    console.log("params :", params);
     setSearchParams(params);
   };
 

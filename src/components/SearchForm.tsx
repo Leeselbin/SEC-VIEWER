@@ -1,30 +1,7 @@
 import React, { useState } from "react";
+import { useCompanies } from "../hooks/useCompanies"; // API 호출 훅 임포트
 
-const COMPANIES: { [key: string]: string } = {
-  NVDA: "0001045810",
-  MSFT: "0000789019",
-  AAPL: "0000320193",
-  AMZN: "0001018724",
-  GOOGL: "0001652044",
-  META: "0001326801",
-  AVGO: "0001730168",
-  "BRK-B": "0001067983",
-  TSLA: "0001318605",
-  JPM: "0000019617",
-  WMT: "0000104169",
-  V: "0001403161",
-  LLY: "0000059478",
-  ORCL: "0001341439",
-  NFLX: "0001065280",
-  MA: "0001141391",
-  XOM: "0000034088",
-  COST: "0000909832",
-  CBOE: "0001374310",
-  // GOOG: "0001652044",
-};
-
-const YEAR_OPTIONS = [1, 2, 3, 4, 5, 10];
-
+// --- 타입 정의 ---
 export interface SearchParams {
   cik: string;
   companyName: string;
@@ -38,11 +15,20 @@ interface SearchFormProps {
   isSearching: boolean;
 }
 
+const YEAR_OPTIONS = [1, 2, 3, 4, 5, 10];
+
 const SearchForm: React.FC<SearchFormProps> = ({
   onSearch,
   onReset,
   isSearching,
 }) => {
+  // [수정] useCompanies 훅을 호출하여 회사 목록을 동적으로 가져옵니다.
+  const {
+    data: companies,
+    isLoading: isLoadingCompanies,
+    error: companiesError,
+  } = useCompanies();
+
   const [selectedCik, setSelectedCik] = useState<string>("");
   const [selectedYears, setSelectedYears] = useState<number>(3);
 
@@ -52,17 +38,23 @@ const SearchForm: React.FC<SearchFormProps> = ({
       alert("회사를 선택해주세요.");
       return;
     }
-    const companyName =
-      Object.keys(COMPANIES).find((name) => COMPANIES[name] === selectedCik) ||
-      "";
 
-    console.log("companyName :", companyName);
-    onSearch({
-      cik: selectedCik,
-      companyName,
-      years: selectedYears,
-      ticker: companyName,
-    });
+    // [수정] API로 받아온 companies 배열에서 선택된 회사 정보를 찾습니다.
+    const selectedCompany = companies?.find(
+      (company) => company.sec_code === selectedCik
+    );
+
+    if (selectedCompany) {
+      // 찾은 정보를 바탕으로 onSearch 함수를 호출합니다.
+      onSearch({
+        cik: selectedCompany.sec_code,
+        companyName: selectedCompany.title,
+        years: selectedYears,
+        ticker: selectedCompany.ticker_code,
+      });
+    } else {
+      alert("선택된 회사 정보를 찾을 수 없습니다.");
+    }
   };
 
   const handleReset = () => {
@@ -86,11 +78,19 @@ const SearchForm: React.FC<SearchFormProps> = ({
         value={selectedCik}
         onChange={(e) => setSelectedCik(e.target.value)}
         required
+        disabled={isLoadingCompanies || !!companiesError} // 로딩 중이거나 에러 발생 시 비활성화
       >
-        <option value="">-- 회사 선택 --</option>
-        {Object.entries(COMPANIES).map(([name, cik]) => (
-          <option key={cik} value={cik}>
-            {name}
+        <option value="">
+          {isLoadingCompanies
+            ? "회사 목록 로딩 중..."
+            : companiesError
+            ? "목록 로드 실패"
+            : "-- 회사 선택 --"}
+        </option>
+        {/* [수정] API로 받아온 companies 데이터로 드롭다운 메뉴를 동적으로 생성합니다. */}
+        {companies?.map((company) => (
+          <option key={company.ticker_code} value={company.sec_code}>
+            {company.title} ({company.ticker_code})
           </option>
         ))}
       </select>
