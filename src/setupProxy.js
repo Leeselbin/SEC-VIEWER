@@ -24,7 +24,7 @@ module.exports = function (app) {
   );
 
   // 새로운 주가 데이터 API 프록시
-  https: app.use(
+  app.use(
     "/stock-api",
     createProxyMiddleware({
       target: "https://sec-viewer-api.onrender.com",
