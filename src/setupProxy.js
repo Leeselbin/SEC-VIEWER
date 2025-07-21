@@ -24,10 +24,10 @@ module.exports = function (app) {
   );
 
   // 새로운 주가 데이터 API 프록시
-  app.use(
+  https: app.use(
     "/stock-api",
     createProxyMiddleware({
-      target: "https://port-0-work-fount-md5atyx32a28fa6c.sel5.cloudtype.app",
+      target: "https://sec-viewer-api.onrender.com",
       changeOrigin: true,
       pathRewrite: {
         "^/stock-api": "",
