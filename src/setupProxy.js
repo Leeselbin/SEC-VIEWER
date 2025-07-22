@@ -48,4 +48,15 @@ module.exports = function (app) {
       },
     })
   );
+
+  app.use(
+    "/getNews-api",
+    createProxyMiddleware({
+      target: "https://port-0-work-fount-md5atyx32a28fa6c.sel5.cloudtype.app",
+      changeOrigin: true,
+      pathRewrite: {
+        "^/getNews-api": "",
+      },
+    })
+  );
 };
