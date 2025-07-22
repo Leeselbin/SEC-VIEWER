@@ -13,7 +13,6 @@ import IncomeStatementTable from "./IncomeStatementTable";
 import Accordion from "./Accordion";
 import { useStockPrice } from "../hooks/useStockPrice";
 import StockPriceChart from "./StockPriceChart";
-import { usePolarityPress } from "../hooks/usePolarityPress";
 
 interface FinancialDataTableProps {
   companyName: string;
