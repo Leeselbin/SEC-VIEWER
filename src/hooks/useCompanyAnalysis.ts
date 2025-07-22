@@ -68,17 +68,6 @@ export interface IncomeStatementData {
   quarterly: IncomeStatementRecord[];
 }
 
-// --- API 응답 원본 데이터 타입 정의 ---
-interface SECUnitData {
-  fy: number;
-  val: number;
-  form: string;
-  filed: string;
-  fp: string;
-  start?: string;
-  end: string;
-}
-
 /**
  * 백엔드 API를 호출하여 기업 분석 데이터를 가져오는 함수
  * @param cik - 회사 CIK 번호
