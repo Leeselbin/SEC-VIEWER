@@ -27,7 +27,8 @@ module.exports = function (app) {
   app.use(
     "/stock-api",
     createProxyMiddleware({
-      target: "https://sec-viewer-api.onrender.com",
+      target:
+        "https://port-0-sec-viewer-backend-mddvbxmfda69479d.sel5.cloudtype.app/",
       changeOrigin: true,
       pathRewrite: {
         "^/stock-api": "",
