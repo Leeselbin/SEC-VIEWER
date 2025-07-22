@@ -3,10 +3,13 @@ const { createProxyMiddleware } = require("http-proxy-middleware");
 module.exports = function (app) {
   // SEC 데이터 프록시
   app.use(
-    "/api",
+    "/analysis-api",
     createProxyMiddleware({
-      target: "https://data.sec.gov",
+      target: process.env.REACT_APP_API_URL,
       changeOrigin: true,
+      pathRewrite: {
+        "^/analysis-api": "",
+      },
     })
   );
 
@@ -16,7 +19,6 @@ module.exports = function (app) {
     createProxyMiddleware({
       target: "https://port-0-work-fount-md5atyx32a28fa6c.sel5.cloudtype.app", // 실제 API 서버 주소
       changeOrigin: true,
-      // URL 재작성: '/companies-api/getCompanies' -> '/getCompanies'
       pathRewrite: {
         "^/companies-api": "",
       },
@@ -27,8 +29,7 @@ module.exports = function (app) {
   app.use(
     "/stock-api",
     createProxyMiddleware({
-      target:
-        "https://port-0-sec-viewer-backend-mddvbxmfda69479d.sel5.cloudtype.app/",
+      target: process.env.REACT_APP_API_URL,
       changeOrigin: true,
       pathRewrite: {
         "^/stock-api": "",

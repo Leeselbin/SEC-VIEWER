@@ -1,5 +1,5 @@
 import React from "react";
-import { AnalysisResult } from "../hooks/useCompanyFacts";
+import { AnalysisResult } from "../hooks/useCompanyAnalysis";
 
 interface AnalysisSummaryProps {
   result: AnalysisResult;

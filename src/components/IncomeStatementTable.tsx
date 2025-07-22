@@ -1,5 +1,5 @@
 import React from "react";
-import { IncomeStatementData } from "../hooks/useCompanyFacts";
+import { IncomeStatementData } from "../hooks/useCompanyAnalysis";
 
 interface IncomeStatementTableProps {
   data: IncomeStatementData;

@@ -1,5 +1,8 @@
 import React, { useState } from "react";
-import { ProcessedRecord, useCompanyFacts } from "../hooks/useCompanyFacts";
+import {
+  ProcessedRecord,
+  useCompanyAnalysis,
+} from "../hooks/useCompanyAnalysis";
 
 import ModalDataView from "./Modal/ModalDataView";
 import YoYChart from "./YoYChart";
@@ -25,19 +28,23 @@ const FinancialDataTable: React.FC<FinancialDataTableProps> = ({
   years,
   ticker,
 }) => {
-  const { data, error, isLoading } = useCompanyFacts(cik, companyName, years);
+  const { data, error, isLoading } = useCompanyAnalysis(
+    cik,
+    companyName,
+    years
+  );
   const {
     data: stockData,
     error: stockError,
     isLoading: isStockLoading,
   } = useStockPrice(ticker, years);
-  const {
-    data: polarityData,
-    error: polarityError,
-    isLoading: isPolarityLoading,
-  } = usePolarityPress(ticker);
+  // const {
+  //   data: polarityData,
+  //   error: polarityError,
+  //   isLoading: isPolarityLoading,
+  // } = usePolarityPress(ticker);
 
-  console.log("polarityData :", polarityData);
+  // console.log("polarityData :", polarityData);
 
   const [selectedRecord, setSelectedRecord] = useState<ProcessedRecord | null>(
     null
@@ -51,9 +58,9 @@ const FinancialDataTable: React.FC<FinancialDataTableProps> = ({
     setSelectedRecord(null);
   };
 
-  if (isLoading || isStockLoading || isPolarityLoading)
+  if (isLoading || isStockLoading)
     return <p style={{ textAlign: "center" }}>데이터 로딩 및 계산 중...</p>;
-  if (error || stockError || polarityError)
+  if (error || stockError)
     return (
       <p style={{ color: "red", textAlign: "center" }}>
         오류: {error?.message}

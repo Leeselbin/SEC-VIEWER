@@ -1,5 +1,5 @@
 import React, { useState } from "react";
-import { ProcessedRecord } from "../hooks/useCompanyFacts";
+import { ProcessedRecord } from "../hooks/useCompanyAnalysis";
 
 interface FinancialDataViewProps {
   companyName: string;
