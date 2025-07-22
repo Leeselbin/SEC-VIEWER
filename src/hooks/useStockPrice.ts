@@ -33,7 +33,7 @@ const fetchStockData = async (
 ): Promise<StockChartData> => {
   // API는 years 파라미터로 한번에 N년치 데이터를 반환하므로, API를 한 번만 호출합니다.
 
-  const url = `/stock-api/getFinData/${ticker}/${years}/`;
+  const url = `/stock-api/getFinData/${ticker}/${years}`;
 
   let apiData: RawStockData[] = [];
 
