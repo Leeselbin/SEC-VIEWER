@@ -78,11 +78,6 @@ interface SECUnitData {
   start?: string;
   end: string;
 }
-interface SECFact {
-  description: string;
-  units: { [key: string]: SECUnitData[] };
-}
-
 /**
  * 백엔드 API를 호출하여 기업 분석 데이터를 가져오는 함수
  * @param cik - 회사 CIK 번호
