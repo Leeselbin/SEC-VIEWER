@@ -1,4 +1,4 @@
-import { useEffect, useRef, useCallback } from "react";
+import { useEffect, useRef, useCallback, useMemo } from "react";
 import { useInfiniteGetNews } from "../hooks/useGetNews"; // 훅 불러오기
 import NewsList, { Article } from "../components/NewsList"; // NewsList 컴포넌트와 Article 인터페이스 불러오기
 
@@ -15,8 +15,13 @@ const NewsPage = () => {
 
   const observerElem = useRef<HTMLDivElement>(null); // HTMLDivElement로 타입 명시
 
-  const allArticles: Article[] =
-    data?.pages?.flatMap((page: any) => page || []) || [];
+  const allArticles: Article[] = useMemo(() => {
+    return (
+      data?.pages?.flatMap(
+        (page: Article[]) => page || [] // page에 Article[] 타입 명시 (타입 에러 방지)
+      ) || []
+    );
+  }, [data]); // data가 변경될 때만 다시 계산
 
   const handleObserver = useCallback(
     (entries: IntersectionObserverEntry[]) => {

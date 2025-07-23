@@ -54,7 +54,7 @@ export const useInfiniteGetNews = (query: string) => {
       if (
         lastPage &&
         lastPage.length < articlesPerPage &&
-        totalPerPage == lastPage.length
+        totalPerPage === lastPage.length
       ) {
         return undefined; // 더 이상 가져올 데이터가 없으면 undefined 반환
       }
