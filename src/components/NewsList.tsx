@@ -6,6 +6,7 @@ export interface Article {
   publish: string;
   title: string;
   url: string;
+  source: string;
 }
 
 interface NewsListProps {
@@ -106,7 +107,44 @@ const NewsList: React.FC<NewsListProps> = ({ articles }) => {
   const dateStyles: React.CSSProperties = {
     fontSize: "14px", // text-sm
     color: "#4b5563", // text-gray-600
+    marginBottom: "4px", // 날짜와 출처 사이 간격
   };
+
+  const sourceStyles: React.CSSProperties = {
+    fontSize: "12px", // 더 작은 글꼴 크기
+    color: "#6b7280", // 더 연한 회색
+    fontStyle: "italic", // 이탤릭체
+  };
+
+  const loadingErrorStyles: React.CSSProperties = {
+    display: "flex",
+    justifyContent: "center",
+    alignItems: "center",
+    padding: "16px",
+    fontSize: "18px", // text-lg
+  };
+
+  const loadingTextStyles: React.CSSProperties = {
+    color: "#4b5563", // text-gray-700
+  };
+
+  const errorTextStyles: React.CSSProperties = {
+    color: "#dc2626", // text-red-600
+    backgroundColor: "#fee2e2", // bg-red-100
+    borderRadius: "8px", // rounded-lg
+  };
+
+  const noNewsTextStyles: React.CSSProperties = {
+    color: "#6b7280", // text-gray-500
+  };
+
+  if (!articles || articles.length === 0) {
+    return (
+      <div style={{ ...loadingErrorStyles, ...noNewsTextStyles }}>
+        뉴스가 없습니다.
+      </div>
+    );
+  }
 
   return (
     <div style={containerStyles}>
@@ -150,6 +188,10 @@ const NewsList: React.FC<NewsListProps> = ({ articles }) => {
                   day: "numeric",
                 })}
               </p>
+              {/* 출처 정보 추가 */}
+              {article.source && (
+                <p style={sourceStyles}>출처: {article.source}</p>
+              )}
             </div>
           </div>
         ))}
