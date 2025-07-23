@@ -1,6 +1,6 @@
 import React, { useState } from "react";
-import SearchForm, { SearchParams } from "../components/SearchForm";
-import FinancialDataTable from "../components/FinacialDataTable";
+import FinancialDataTable from "../components/sec-page/FinancialDataTable/FinacialDataTable";
+import SearchForm, { SearchParams } from "../components/sec-page/SearchForm";
 
 const SecPage: React.FC = () => {
   // 검색 조건을 상태로 관리. 초기값은 null.

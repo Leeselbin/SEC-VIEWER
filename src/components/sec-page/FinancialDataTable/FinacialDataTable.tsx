@@ -2,16 +2,16 @@ import React, { useState } from "react";
 import {
   ProcessedRecord,
   useCompanyAnalysis,
-} from "../hooks/useCompanyAnalysis";
-
-import ModalDataView from "./Modal/ModalDataView";
+} from "../../../hooks/useCompanyAnalysis";
+import ModalDataView from "../../modal/ModalDataView";
 import YoYChart from "./YoYChart";
 import InvestmentMetricsTable from "./InvestmentMetricsTable";
+import IncomeStatementTable from "./IncomeStatementTable";
+import Accordion from "../../common/Accordion";
+import { useStockPrice } from "../../../hooks/useStockPrice";
+
 import AnalysisSummary from "./AnalysisSummary";
 import FinancialDataView from "./FinacialDataView";
-import IncomeStatementTable from "./IncomeStatementTable";
-import Accordion from "./Accordion";
-import { useStockPrice } from "../hooks/useStockPrice";
 import StockPriceChart from "./StockPriceChart";
 
 interface FinancialDataTableProps {
@@ -70,21 +70,16 @@ const FinancialDataTable: React.FC<FinancialDataTableProps> = ({
   return (
     <>
       {/* 종합 재무 분석 */}
-      {data.analysisResult && (
-        <Accordion title="종합 재무 분석 (5단계 평가)" defaultOpen={true}>
-          <AnalysisSummary result={data.analysisResult} />
-        </Accordion>
-      )}
+      {data.analysisResult && <AnalysisSummary result={data.analysisResult} />}
 
       {/* 주가 차트*/}
-      <Accordion
-        title={`${companyName} (${ticker}) 주가 차트`}
-        defaultOpen={true}
-      >
-        {stockData && (
-          <StockPriceChart chartData={stockData} companyName={companyName} />
-        )}
-      </Accordion>
+      {stockData && (
+        <StockPriceChart
+          chartData={stockData}
+          companyName={companyName}
+          ticker={ticker}
+        />
+      )}
 
       {/* 주요 투자 지표, YoY 성장률 */}
       <div style={{ display: "grid", margin: "40px 0" }}>
@@ -108,26 +103,16 @@ const FinancialDataTable: React.FC<FinancialDataTableProps> = ({
 
       {/* 연간 손익계산서 */}
       {data.incomeStatementData && (
-        <Accordion title="손익계산서 요약" defaultOpen={true}>
-          <IncomeStatementTable data={data.incomeStatementData} />
-        </Accordion>
+        <IncomeStatementTable data={data.incomeStatementData} />
       )}
 
       {/* 상세설명 */}
       {data.records && (
-        <div style={{ margin: "40px 0 40px" }}>
-          <Accordion
-            title={`상세 재무제표 (최근 ${years}년)`}
-            defaultOpen={true}
-          >
-            <FinancialDataView
-              companyName={companyName}
-              years={years}
-              records={data.records}
-              onRowClick={handleRowClick}
-            />
-          </Accordion>
-        </div>
+        <FinancialDataView
+          records={data.records}
+          onRowClick={handleRowClick}
+          years={years}
+        />
       )}
 
       {/* Modal */}

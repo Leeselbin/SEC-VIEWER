@@ -1,5 +1,5 @@
 import React, { useState } from "react";
-import { useCompanies } from "../hooks/useCompanies"; // API 호출 훅 임포트
+import { useCompanies } from "../../hooks/useCompanies";
 
 // --- 타입 정의 ---
 export interface SearchParams {

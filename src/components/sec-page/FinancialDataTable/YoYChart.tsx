@@ -10,7 +10,7 @@ import {
   Tooltip,
   Legend,
 } from "chart.js";
-import { ChartData } from "../hooks/useCompanyAnalysis";
+import { ChartData } from "../../../hooks/useCompanyAnalysis";
 
 ChartJS.register(
   CategoryScale,

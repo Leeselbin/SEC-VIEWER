@@ -1,6 +1,6 @@
 import { useEffect, useRef, useCallback, useMemo } from "react";
 import { useInfiniteGetNews } from "../hooks/useGetNews"; // 훅 불러오기
-import NewsList, { Article } from "../components/NewsList"; // NewsList 컴포넌트와 Article 인터페이스 불러오기
+import NewsList, { Article } from "../components/news-page/NewsList"; // NewsList 컴포넌트와 Article 인터페이스 불러오기
 
 const NewsPage = () => {
   let query = "APPLE"; // 검색 쿼리 (예시: 특정 토픽이나 키워드)

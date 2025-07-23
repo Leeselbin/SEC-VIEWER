@@ -1,7 +1,5 @@
-// src/components/InvestmentMetricsTable.tsx
-
 import React, { useState } from "react";
-import { InvestmentMetric } from "../hooks/useCompanyAnalysis";
+import { InvestmentMetric } from "../../../hooks/useCompanyAnalysis";
 
 interface InvestmentMetricsTableProps {
   metrics: InvestmentMetric[];

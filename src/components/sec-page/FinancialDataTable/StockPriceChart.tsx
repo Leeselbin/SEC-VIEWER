@@ -12,7 +12,8 @@ import {
   TimeScale,
 } from "chart.js";
 import "chartjs-adapter-date-fns";
-import { StockChartData } from "../hooks/useStockPrice";
+import { StockChartData } from "../../../hooks/useStockPrice";
+import Accordion from "../../common/Accordion";
 
 // Chart.js에 필요한 모든 모듈 등록
 ChartJS.register(
@@ -29,11 +30,13 @@ ChartJS.register(
 interface StockPriceChartProps {
   chartData: StockChartData;
   companyName: string;
+  ticker: string;
 }
 
 const StockPriceChart: React.FC<StockPriceChartProps> = ({
   chartData,
   companyName,
+  ticker,
 }) => {
   const [timeUnit, setTimeUnit] = useState<"day" | "week" | "month">("day");
 
@@ -132,44 +135,55 @@ const StockPriceChart: React.FC<StockPriceChartProps> = ({
   };
 
   return (
-    <div
-      style={{
-        padding: "20px",
-        border: "1px solid #ddd",
-        borderRadius: "8px",
-        marginBottom: "20px",
-      }}
-    >
-      <div style={buttonGroupStyle}>
-        <button
-          onClick={() => setTimeUnit("day")}
-          style={
-            timeUnit === "day" ? activeToggleButtonStyle : toggleButtonStyle
-          }
+    <div style={{ display: "grid", margin: "40px 0" }}>
+      <Accordion
+        title={`${companyName} (${ticker}) 주가 차트`}
+        defaultOpen={true}
+      >
+        <div
+          style={{
+            padding: "20px",
+            border: "1px solid #ddd",
+            borderRadius: "8px",
+            marginBottom: "20px",
+          }}
         >
-          일
-        </button>
-        <button
-          onClick={() => setTimeUnit("week")}
-          style={
-            timeUnit === "week" ? activeToggleButtonStyle : toggleButtonStyle
-          }
-        >
-          주
-        </button>
-        <button
-          onClick={() => setTimeUnit("month")}
-          style={
-            timeUnit === "month" ? activeToggleButtonStyle : toggleButtonStyle
-          }
-        >
-          월
-        </button>
-      </div>
-      {/* 차트의 높이를 지정하기 위해 div로 한번 감싸줍니다. */}
-      <div style={{ position: "relative", height: "400px" }}>
-        <Line options={options} data={data} />
-      </div>
+          <div style={buttonGroupStyle}>
+            <button
+              onClick={() => setTimeUnit("day")}
+              style={
+                timeUnit === "day" ? activeToggleButtonStyle : toggleButtonStyle
+              }
+            >
+              일
+            </button>
+            <button
+              onClick={() => setTimeUnit("week")}
+              style={
+                timeUnit === "week"
+                  ? activeToggleButtonStyle
+                  : toggleButtonStyle
+              }
+            >
+              주
+            </button>
+            <button
+              onClick={() => setTimeUnit("month")}
+              style={
+                timeUnit === "month"
+                  ? activeToggleButtonStyle
+                  : toggleButtonStyle
+              }
+            >
+              월
+            </button>
+          </div>
+          {/* 차트의 높이를 지정하기 위해 div로 한번 감싸줍니다. */}
+          <div style={{ position: "relative", height: "400px" }}>
+            <Line options={options} data={data} />
+          </div>
+        </div>
+      </Accordion>
     </div>
   );
 };
