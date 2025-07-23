@@ -39,7 +39,7 @@ export const useInfiniteGetNews = (query: string) => {
   return useInfiniteQuery({
     queryKey: ["news-infinite", query], // 쿼리 키에 검색 쿼리 포함
     queryFn: fetchGetNews,
-    staleTime: 1000 * 60 * 5, // 5분 동안 데이터를 신선하게 유지
+    staleTime: 1000 * 60, // 1분 동안 데이터를 신선하게 유지
     refetchOnWindowFocus: false, // 창에 다시 포커스될 때 재요청하지 않음
 
     initialPageParam: 1, // 첫 번째 페이지 파라미터의 초기값
