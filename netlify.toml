@@ -29,3 +29,6 @@
   from = "/getNews-api/*"
   to = "https://port-0-work-fount-md5atyx32a28fa6c.sel5.cloudtype.app/:splat"
   status = 200
+
+
+  

@@ -18,7 +18,12 @@ const fetchGetNews = async ({
 }): Promise<Article[]> => {
   // queryKey에서 검색 쿼리를 추출합니다. (예: ["news-infinite", "APPLE"])
   const [, query] = queryKey;
-  const url = `/getNews-api/getEventNewsAPI/${query}/${pageParam}`;
+  let url = `/getNews-api/getEventNewsAPI/${pageParam}`;
+
+  if (query) {
+    // query 값이 존재하면 (빈 문자열이 아니면)
+    url += `?query=${encodeURIComponent(query)}`; // URL 인코딩하여 추가
+  }
 
   const response = await fetch(url);
 

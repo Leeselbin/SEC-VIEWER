@@ -124,16 +124,6 @@ const NewsList: React.FC<NewsListProps> = ({ articles }) => {
     fontSize: "18px", // text-lg
   };
 
-  const loadingTextStyles: React.CSSProperties = {
-    color: "#4b5563", // text-gray-700
-  };
-
-  const errorTextStyles: React.CSSProperties = {
-    color: "#dc2626", // text-red-600
-    backgroundColor: "#fee2e2", // bg-red-100
-    borderRadius: "8px", // rounded-lg
-  };
-
   const noNewsTextStyles: React.CSSProperties = {
     color: "#6b7280", // text-gray-500
   };
