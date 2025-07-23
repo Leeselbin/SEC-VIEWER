@@ -9,28 +9,16 @@ interface Article {
   source: string;
 }
 
-export interface BackendApiResponse {
-  articles: {
-    results: Article[]; // 기사 목록이 'results' 배열 안에 있음
-    count?: number; // 총 기사 수 (선택 사항)
-    page?: number; // 현재 페이지 번호 (선택 사항)
-    pages?: number; // 총 페이지 수 (선택 사항)
-  };
-  // 기타 응답 필드 (예: uri, info, etc.)
-  uri?: string;
-  info?: any; // 필요에 따라 더 구체적인 타입으로 정의
-}
-
 const fetchGetNews = async ({
   queryKey,
   pageParam = 1,
 }: {
   queryKey: any[];
   pageParam?: number;
-}): Promise<BackendApiResponse> => {
+}): Promise<Article[]> => {
   // queryKey에서 검색 쿼리를 추출합니다. (예: ["news-infinite", "APPLE"])
   const [_key, query] = queryKey;
-  const url = `/get-news/getNewsAPI/${query}/${pageParam}`;
+  const url = `/getNews-api/getEventNewsAPI/${query}/${pageParam}`;
 
   const response = await fetch(url);
 
@@ -44,7 +32,7 @@ const fetchGetNews = async ({
   }
 
   // 백엔드에서 반환하는 JSON 데이터를 그대로 반환합니다.
-  return response.json() as Promise<BackendApiResponse>;
+  return response.json() as Promise<Article[]>;
 };
 
 export const useInfiniteGetNews = (query: string) => {
@@ -56,12 +44,17 @@ export const useInfiniteGetNews = (query: string) => {
 
     initialPageParam: 1, // 첫 번째 페이지 파라미터의 초기값
 
-    getNextPageParam: (lastPage: BackendApiResponse, allPages) => {
+    getNextPageParam: (lastPage: Article[], allPages) => {
       // lastPage에 타입 명시
       const articlesPerPage = 20; // 백엔드에서 한 번에 가져오는 기사 수와 일치해야 합니다.
+      const totalPerPage = allPages.length * 20;
+
+      // console.log("lastPage :", lastPage);
+      // console.log("allPages :", allPages);
       if (
-        lastPage.articles &&
-        lastPage.articles.results.length < articlesPerPage
+        lastPage &&
+        lastPage.length < articlesPerPage &&
+        totalPerPage == lastPage.length
       ) {
         return undefined; // 더 이상 가져올 데이터가 없으면 undefined 반환
       }

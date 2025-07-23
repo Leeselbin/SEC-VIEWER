@@ -16,7 +16,7 @@ const NewsPage = () => {
   const observerElem = useRef<HTMLDivElement>(null); // HTMLDivElement로 타입 명시
 
   const allArticles: Article[] =
-    data?.pages?.flatMap((page: any) => page.articles?.results || []) || [];
+    data?.pages?.flatMap((page: any) => page || []) || [];
 
   const handleObserver = useCallback(
     (entries: IntersectionObserverEntry[]) => {
