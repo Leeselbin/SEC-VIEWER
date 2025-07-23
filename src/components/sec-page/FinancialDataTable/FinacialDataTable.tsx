@@ -3,7 +3,7 @@ import {
   ProcessedRecord,
   useCompanyAnalysis,
 } from "../../../hooks/useCompanyAnalysis";
-import ModalDataView from "../../modal/ModalDataView";
+
 import YoYChart from "./YoYChart";
 import InvestmentMetricsTable from "./InvestmentMetricsTable";
 import IncomeStatementTable from "./IncomeStatementTable";
@@ -13,6 +13,7 @@ import { useStockPrice } from "../../../hooks/useStockPrice";
 import AnalysisSummary from "./AnalysisSummary";
 import FinancialDataView from "./FinacialDataView";
 import StockPriceChart from "./StockPriceChart";
+import ModalDetailData from "./ModalDetailData";
 
 interface FinancialDataTableProps {
   companyName: string;
@@ -116,34 +117,11 @@ const FinancialDataTable: React.FC<FinancialDataTableProps> = ({
       )}
 
       {/* Modal */}
-      <ModalDataView isOpen={!!selectedRecord} onClose={handleCloseModal}>
-        {selectedRecord && (
-          <div>
-            <h3
-              style={{
-                marginTop: 0,
-                borderBottom: "2px solid #eee",
-                paddingBottom: "10px",
-              }}
-            >
-              상세 정보 ({selectedRecord.재무항목})
-            </h3>
-            <ul style={{ listStyle: "none", padding: 0 }}>
-              {Object.entries(selectedRecord).map(([key, value]) => (
-                <li
-                  key={key}
-                  style={{
-                    padding: "5px 0",
-                    borderBottom: "1px solid #f0f0f0",
-                  }}
-                >
-                  <strong>{key}:</strong> {value?.toString() || "N/A"}
-                </li>
-              ))}
-            </ul>
-          </div>
-        )}
-      </ModalDataView>
+      <ModalDetailData
+        isOpen={!!selectedRecord}
+        onClose={handleCloseModal}
+        selectedRecord={selectedRecord}
+      />
     </>
   );
 };

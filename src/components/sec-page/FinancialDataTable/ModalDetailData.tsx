@@ -1,12 +1,17 @@
 import React from "react";
+import { ProcessedRecord } from "../../../hooks/useCompanyAnalysis";
 
 interface ModalProps {
   isOpen: boolean;
   onClose: () => void;
-  children: React.ReactNode;
+  selectedRecord: ProcessedRecord | null;
 }
 
-const ModalDataView: React.FC<ModalProps> = ({ isOpen, onClose, children }) => {
+const ModalDetailData: React.FC<ModalProps> = ({
+  isOpen,
+  onClose,
+  selectedRecord,
+}) => {
   if (!isOpen) {
     return null;
   }
@@ -51,10 +56,35 @@ const ModalDataView: React.FC<ModalProps> = ({ isOpen, onClose, children }) => {
         <button style={modalCloseButtonStyle} onClick={onClose}>
           &times;
         </button>
-        {children}
+        {selectedRecord && (
+          <div>
+            <h3
+              style={{
+                marginTop: 0,
+                borderBottom: "2px solid #eee",
+                paddingBottom: "10px",
+              }}
+            >
+              상세 정보 ({selectedRecord.재무항목})
+            </h3>
+            <ul style={{ listStyle: "none", padding: 0 }}>
+              {Object.entries(selectedRecord).map(([key, value]) => (
+                <li
+                  key={key}
+                  style={{
+                    padding: "5px 0",
+                    borderBottom: "1px solid #f0f0f0",
+                  }}
+                >
+                  <strong>{key}:</strong> {value?.toString() || "N/A"}
+                </li>
+              ))}
+            </ul>
+          </div>
+        )}
       </div>
     </div>
   );
 };
 
-export default ModalDataView;
+export default ModalDetailData;
