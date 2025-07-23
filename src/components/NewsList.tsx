@@ -1,8 +1,6 @@
-// NewsList.tsx (또는 NewsList.jsx)
-import React, { useState } from "react"; // useState 훅을 import 합니다.
+import React, { useState } from "react";
 
-// API 응답 구조에 맞는 Article 인터페이스 정의
-interface Article {
+export interface Article {
   content: string;
   image: string;
   publish: string;
@@ -10,14 +8,11 @@ interface Article {
   url: string;
 }
 
-// NewsList 컴포넌트의 props 타입 정의
 interface NewsListProps {
   articles: Article[];
-  loading: boolean;
-  error: Error | null;
 }
 
-const NewsList: React.FC<NewsListProps> = ({ articles, loading, error }) => {
+const NewsList: React.FC<NewsListProps> = ({ articles }) => {
   // 호버된 기사의 URL을 저장하는 상태
   const [hoveredArticleUrl, setHoveredArticleUrl] = useState<string | null>(
     null
@@ -112,52 +107,6 @@ const NewsList: React.FC<NewsListProps> = ({ articles, loading, error }) => {
     fontSize: "14px", // text-sm
     color: "#4b5563", // text-gray-600
   };
-
-  const loadingErrorStyles: React.CSSProperties = {
-    display: "flex",
-    justifyContent: "center",
-    alignItems: "center",
-    padding: "16px",
-    fontSize: "18px", // text-lg
-  };
-
-  const loadingTextStyles: React.CSSProperties = {
-    color: "#4b5563", // text-gray-700
-  };
-
-  const errorTextStyles: React.CSSProperties = {
-    color: "#dc2626", // text-red-600
-    backgroundColor: "#fee2e2", // bg-red-100
-    borderRadius: "8px", // rounded-lg
-  };
-
-  const noNewsTextStyles: React.CSSProperties = {
-    color: "#6b7280", // text-gray-500
-  };
-
-  if (loading) {
-    return (
-      <div style={{ ...loadingErrorStyles, ...loadingTextStyles }}>
-        뉴스 불러오는 중...
-      </div>
-    );
-  }
-
-  if (error) {
-    return (
-      <div style={{ ...loadingErrorStyles, ...errorTextStyles }}>
-        오류 발생: {error.message}
-      </div>
-    );
-  }
-
-  if (!articles || articles.length === 0) {
-    return (
-      <div style={{ ...loadingErrorStyles, ...noNewsTextStyles }}>
-        뉴스가 없습니다.
-      </div>
-    );
-  }
 
   return (
     <div style={containerStyles}>
