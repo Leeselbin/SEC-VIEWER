@@ -17,7 +17,7 @@ const fetchGetNews = async ({
   pageParam?: number;
 }): Promise<Article[]> => {
   // queryKey에서 검색 쿼리를 추출합니다. (예: ["news-infinite", "APPLE"])
-  const [_key, query] = queryKey;
+  const [, query] = queryKey;
   const url = `/getNews-api/getEventNewsAPI/${query}/${pageParam}`;
 
   const response = await fetch(url);
