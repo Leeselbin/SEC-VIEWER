@@ -231,3 +231,9 @@ npm start
   to = "https://data.sec.gov/api/:splat"
   status = 200
 ```
+---
+
+<h2>백앤드 배포</h2>
+이 프로젝트는 CLOUDTYPE을 통해 백앤드 배포하였습니다. -> git repo안에 SEC-VIEWER-BACKEND 에잇다
+
+
