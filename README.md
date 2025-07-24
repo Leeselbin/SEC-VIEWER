@@ -1,6 +1,15 @@
 <h1>로컬에서만 사용해야한다... 사이드프로젝트라고 할지라도, 데이터를 앱이나 웹사이트에 통합하여 일반이이 접근하여 볼 수 있도록 '출시'하거나 '배포'하는순간 상업적 이용여부와 관계없이 불법적인 행위가 될수 있다고한다..</h1>
+<img width="1353" height="855" alt="스크린샷 2025-07-24 오후 2 41 31" src="https://github.com/user-attachments/assets/cd518c65-d265-4fb1-b4b0-a9bceb93e9d8" />
+<img width="1353" height="860" alt="스크린샷 2025-07-24 오후 2 41 40" src="https://github.com/user-attachments/assets/2f09dba0-19e2-4cf0-9847-b900ce3fb935" />
+<img width="1262" height="991" alt="스크린샷 2025-07-24 오후 2 43 54" src="https://github.com/user-attachments/assets/806cf774-6912-410c-87b4-b863ff7326e3" />
+<img width="1262" height="991" alt="스크린샷 2025-07-24 오후 2 44 00" src="https://github.com/user-attachments/assets/10e0901a-4581-4f42-9c5b-174e632ebd1f" />
+<img width="1260" height="991" alt="스크린샷 2025-07-24 오후 2 44 05" src="https://github.com/user-attachments/assets/c239e508-3f6d-47f0-a7b4-76aaf551861f" />
+<img width="1262" height="992" alt="스크린샷 2025-07-24 오후 2 44 10" src="https://github.com/user-attachments/assets/8d891fed-75c1-4d3a-ac6f-54249e753984" />
+<img width="1260" height="993" alt="스크린샷 2025-07-24 오후 2 44 17" src="https://github.com/user-attachments/assets/0a6f09fc-36bb-4a07-9926-0fb2c1a50918" />
 
 
+
+---
 <h2>SEC 기업 재무 데이터 뷰어 (SEC Financial Data Viewer) 📊</h2>
 이 프로젝트는 React와 TypeScript를 사용하여 미국 증권거래위원회(SEC)의 EDGAR API로부터 기업의 재무 데이터를 조회하는 웹 애플리케이션입니다. 사용자는 특정 기업과 기간을 선택하여 재무제표 항목들을 확인하고, 주요 투자 지표와 연간 성장률 그래프, 그리고 5단계 정량 분석 모델을 통해 기업의 재무 건전성을 직관적으로 파악할 수 있습니다.
 
